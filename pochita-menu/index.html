@@ -1,0 +1,203 @@
+<!--
+    @title
+        fantasy.constellation Web GUI
+    @author
+        typedef, menu designed by Pochita
+    @notes
+        Be aware that a lot of these settings are hardcoded.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fantasy.constellation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="js/fantasy.constellation.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="nav">
+        <div class="container-nav">
+            <a href="https://fantasy.cat/forums/" target="_blank" class="nav-icon">猫</a>
+            <ul class="navbar">
+                <li class="nav-item active" id="main-toggle">
+                    <a class="nav-link">Main</a></li>
+                <li class="nav-item inactive" id="humanizer-toggle">
+                    <a class="nav-link">Humanizer</a>
+                    <!-- <a class="nav-link-split"></a></li> -->
+                <li class="nav-item inactive" id="weapon-toggle">
+                    <a class="nav-link">Weapon</a></li>
+                <li class="nav-item inactive" id="triggerbot-toggle">
+                    <a class="nav-link">Triggerbot</a></li>
+                <li class="nav-item inactive" id="sound-toggle">
+                    <a class="nav-link">Sound ESP</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section class="section visible" id="main">
+                <input type="checkbox" name="pure_mode_allow_modifications" id="allow_modifications">
+                <label for="allow_modifications">
+                    <span></span>
+                    Allow Modification of Game
+                </label>
+
+                <input type="checkbox" name="pure_mode_silence" id="silence">
+                <label for="silence">
+                    <span></span>
+                    Silence
+                </label>
+
+                <input type="checkbox" name="pure_mode_debug" id="debug">
+                <label for="debug">
+                    <span></span>
+                    Debug Mode
+                </label>
+
+                <input type="checkbox" name="pure_mode_always_update" id="always_update">
+                <label for="always_update">
+                    <span></span>
+                    Download Latest GUI
+                </label>
+
+                <label class="select" for="pure_mode_hwid_spoofer">HWID Spoofer</label>
+                <select name="pure_mode_hwid_spoofer">
+                    <option value="off">Off</option>
+                    <option value="on">On</option>
+                    <option value="full">Full</option>
+                </select>
+
+                <br><br>
+
+                <button class="btn btn-success" onclick="fantasy_cmd(this, 'load')">Load Configuration</button>
+                <button class="btn btn-warning" onclick="fantasy_cmd(this, 'save')">Save Configuration</button>
+
+                <br><br>
+
+                <button class="btn btn-main" onclick="start_constellation()">Start fantasy.constellation</button>
+                <button class="btn btn-danger" onclick="fantasy_cmd(this, 'exit')">Exit</button>
+            </section>
+            <section class="section hidden" id="humanizer">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer" id="humanizer_toggle">
+                <label for="humanizer_toggle">
+                    <span></span>
+                    Toggle Humanizer
+                </label>
+
+                <label class="number" for="humanizer_key">Key #1</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="1" name="humanizer_key">
+
+                <label class="number" for="humanizer_key">Key #2</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_key2">
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_friendly_fire"
+                    id="friendly_fire">
+                <label for="friendly_fire">
+                    <span></span>
+                    Friendly Fire
+                </label>
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_jump_check" id="jump_check">
+                <label for="jump_check">
+                    <span></span>
+                    Jump Check
+                </label>
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_bone_priority"
+                    id="bone_priority">
+                <label for="bone_priority">
+                    <span></span>
+                    Bone Priority
+                </label>
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_anti_lazy" id="anti_lazy">
+                <label for="anti_lazy">
+                    <span></span>
+                    Anti-Lazy Module
+                </label>
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_curve" id="curve">
+                <label for="curve">
+                    <span></span>
+                    Curvature
+                </label>
+
+                <label class="number" for="humanizer_curve_degree">Curvature Degree</label>
+                <input onchange="fantasy_cmd(this, 'set')" step=0.01 type="number" min="0.05" value="0.05"
+                    name="humanizer_curve_degree">
+                <label class="number" for="humanizer_mouse_threshold">Mouse Threshold</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" min="0" value="50"
+                    name="humanizer_mouse_threshold">
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_anxiety" id="anxiety">
+                <label for="anxiety">
+                    <span></span>
+                    Anxiety Humanizer
+                </label>
+
+                <label class="number" for="humanizer_anxiety_strength">Anxiety Strength</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" min="2" value="3"
+                    name="humanizer_anxiety_strength">
+            </section>
+            <section class="section hidden" id="weapon">
+                <div id="weapon-h1" name="weapon_information">Weapon Information: N/A</div>
+
+                <label class="number" for="humanizer_weapon_rcs">RCS Horizontal</label>
+                <input onchange="fantasy_cmd(this, 'set weapon')" type="number" min="0" max="100" value="0"
+                    name="humanizer_weapon_rcs_x">
+
+                <label class="number" for="humanizer_weapon_rcs">RCS Vertical</label>
+                <input onchange="fantasy_cmd(this, 'set weapon')" type="number" min="0" max="100" value="0"
+                    name="humanizer_weapon_rcs_x">
+
+                <labe class="number" l for="humanizer_weapon_bone">Bone</label>
+                    <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="-1" min="-1"
+                        name="humanizer_weapon_bone">
+                    <br><br>
+                    <button class="btn btn-main" onclick="fantasy_cmd(this, 'get weapon')">Refresh Current
+                        Weapon</button>
+            </section>
+            <section class="section hidden" id="triggerbot">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="triggerbot" id="normal_triggerbot">
+                <label for="normal_triggerbot">
+                    <span></span>
+                    Standard Triggerbot
+                </label>
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_triggerbot"
+                    id="humanizer_triggerbot">
+                <label for="humanizer_triggerbot">
+                    <span></span>
+                    Humanizer Triggerbot
+                </label>
+
+                <label class="number" for="humanizer_triggerbot_key">Triggerbot Key</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_triggerbot_key">
+            </section>
+            <section class="section hidden" id="sound">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sound" id="esp_sound">
+                <label for="esp_sound">
+                    <span></span>
+                    Sound ESP
+                </label>
+
+                <label class="number" for="esp_sound_fov">Sound ESP FOV</label>
+                <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="5" name="esp_sound_fov">
+            </section>
+        </div>
+    </main>
+    <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>
