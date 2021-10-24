@@ -32,8 +32,8 @@
                 <li class="nav-item active" id="main-toggle">
                     <a class="nav-link">Main</a></li>
                 <li class="nav-item inactive" id="humanizer-toggle">
-                    <a class="nav-link">Humanizer</a>
-                    <!-- <a class="nav-link-split"></a></li> -->
+                    <a class="nav-link-split">Humanizer</a>
+                    <a class="nav-link-split"></a></li>
                 <li class="nav-item inactive" id="weapon-toggle">
                     <a class="nav-link">Weapon</a></li>
                 <li class="nav-item inactive" id="triggerbot-toggle">
@@ -127,15 +127,6 @@
                     Anti-Lazy Module
                 </label>
 
-                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_curve" id="curve">
-                <label for="curve">
-                    <span></span>
-                    Curvature
-                </label>
-
-                <label class="number" for="humanizer_curve_degree">Curvature Degree</label>
-                <input onchange="fantasy_cmd(this, 'set')" step=0.01 type="number" min="0.05" value="0.05"
-                    name="humanizer_curve_degree">
                 <label class="number" for="humanizer_mouse_threshold">Mouse Threshold</label>
                 <input onchange="fantasy_cmd(this, 'set')" type="number" min="0" value="50"
                     name="humanizer_mouse_threshold">
@@ -184,6 +175,9 @@
 
                 <label class="number" for="humanizer_triggerbot_key">Triggerbot Key</label>
                 <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_triggerbot_key">
+
+                <label class="number" for="humanizer_triggerbot_sleep">Triggerbot Sleep</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_triggerbot_sleep">
             </section>
             <section class="section hidden" id="sound">
                 <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sound" id="esp_sound">

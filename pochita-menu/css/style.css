@@ -15,6 +15,7 @@
   --nord13: #EBCB8B;
   --nord14: #A3BE8C;
   --nord15: #B48EAD;
+  --nord4-hover: hsl(219, 28%, 78%);
   --nord11-hover: hsl(354, 42%, 46%);
   --nord12-hover: hsl(14, 51%, 53%);
   --nord14-hover: hsl(92, 28%, 55%);
@@ -90,6 +91,7 @@ ul {
   padding: 0 15px;
   padding-top: 25px;
   padding-bottom: 25px;
+  cursor: pointer;
 }
 .nav-link-split {
   text-decoration: none;
@@ -113,6 +115,10 @@ ul {
   font-weight: 900;
   unicode-bidi: isolate;
   line-height: 1;
+  color: var(--nord4-hover);
+}
+.nav-link-split:last-child:hover::after {
+  color: var(--nord6);
 }
 
 .active {
@@ -335,3 +341,5 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 .visible {
   display: block;
 }
+
+/*# sourceMappingURL=style.css.map */
