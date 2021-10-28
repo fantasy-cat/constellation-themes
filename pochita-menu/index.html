@@ -40,6 +40,8 @@
                     <a class="nav-link">Triggerbot</a></li>
                 <li class="nav-item inactive" id="sound-toggle">
                     <a class="nav-link">Sound ESP</a></li>
+                <li class="nav-item inactive" id="tf2-toggle">
+                    <a class="nav-link">TF2</a></li>
             </ul>
         </div>
     </nav>
@@ -152,12 +154,14 @@
                 <input onchange="fantasy_cmd(this, 'set weapon')" type="number" min="0" max="100" value="0"
                     name="humanizer_weapon_rcs_x">
 
-                <labe class="number" l for="humanizer_weapon_bone">Bone</label>
-                    <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="-1" min="-1"
-                        name="humanizer_weapon_bone">
-                    <br><br>
-                    <button class="btn btn-main" onclick="fantasy_cmd(this, 'get weapon')">Refresh Current
-                        Weapon</button>
+                <label class="number" l for="humanizer_weapon_bone">Bone</label>
+                <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="-1" min="-1"
+                    name="humanizer_weapon_bone">
+                <br><br>
+                <button class="btn btn-main" onclick="fantasy_cmd(this, 'get weapon')">Refresh Current
+                    Weapon</button>
+
+
             </section>
             <section class="section hidden" id="triggerbot">
                 <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="triggerbot" id="normal_triggerbot">
@@ -189,9 +193,25 @@
                 <label class="number" for="esp_sound_fov">Sound ESP FOV</label>
                 <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="5" name="esp_sound_fov">
             </section>
+            <section class="section hidden" id="tf2">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_headshot_mode" id="tf2_headshot_mode">
+                <label for="tf2_headshot_mode">
+                    <span></span>
+                    Headshot Mode
+                </label>
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab" id="tf2_autobackstab">
+                <label for="tf2_autobackstab">
+                    <span></span>
+                    Autobackstab
+                </label>
+
+                <label class="number" for="humanizer_tf2_autobackstab_key">Autobackstab Key</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_tf2_autobackstab_key">
+            </section>
         </div>
     </main>
-    <script type="module" src="./js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
