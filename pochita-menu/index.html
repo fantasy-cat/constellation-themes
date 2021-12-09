@@ -67,6 +67,12 @@
                     Debug Mode
                 </label>
 
+                <input type="checkbox" name="pure_mode_hypermode" id="hypermode">
+                <label for="hypermode">
+                    <span></span>
+                    Constelia Hypermode
+                </label>
+
                 <input type="checkbox" name="pure_mode_always_update" id="always_update">
                 <label for="always_update">
                     <span></span>
@@ -181,34 +187,64 @@
                 <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_triggerbot_sleep">
             </section>
             <section class="section hidden" id="sound">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp" id="esp">
+                <label for="esp">
+                    <span></span>
+                    ESP
+                </label>
+
+                <label class="number" for="esp_sound_fov">ESP FOV</label>
+                <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="5" name="esp_sound_fov">
+
                 <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sound" id="esp_sound">
                 <label for="esp_sound">
                     <span></span>
                     Sound ESP
                 </label>
 
-                <label class="number" for="esp_sound_fov">Sound ESP FOV</label>
-                <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="5" name="esp_sound_fov">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sonar" id="esp_sonar">
+                <label for="esp_sonar">
+                    <span></span>
+                    Sonar ESP
+                </label>
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="corsair" id="corsair">
+                <label for="corsair">
+                    <span></span>
+                    Corsair ESP
+                </label>
+
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="logitech" id="logitech">
+                <label for="logitech">
+                    <span></span>
+                    Logitech ESP
+                </label>
             </section>
             <section class="section hidden" id="tf2">
-                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_headshot_mode" id="tf2_headshot_mode">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_headshot_mode"
+                    id="tf2_headshot_mode">
                 <label for="tf2_headshot_mode">
                     <span></span>
                     Headshot Mode
                 </label>
 
-                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab" id="tf2_autobackstab">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab"
+                    id="tf2_autobackstab">
                 <label for="tf2_autobackstab">
                     <span></span>
                     Autobackstab
                 </label>
 
                 <label class="number" for="humanizer_tf2_autobackstab_key">Autobackstab Key</label>
-                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_tf2_autobackstab_key">
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0"
+                    name="humanizer_tf2_autobackstab_key">
             </section>
         </div>
     </main>
-    <script src="js/main.js"></script>
+    <script>
+        var exports = {};
+    </script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
