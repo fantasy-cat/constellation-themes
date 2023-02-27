@@ -1,0 +1,320 @@
+<html>
+    <head>
+        <style>
+            /*poor css position below*/
+            @import url('https://fonts.googleapis.com/css2?family=League+Spartan&family=Open+Sans&family=Poppins&family=Roboto&family=Work+Sans&display=swap');
+ 
+            html{
+                box-sizing: border-box;
+                background-image: url("https://wallpaperaccess.com/full/632832.png");
+                background-size: cover;
+                /* background-color: rgb(27, 27, 27); */
+                color: white;
+                font-size: 14px;
+                font-family: 'Open Sans', sans-serif;
+            }
+
+            .cool-shadow{
+                box-shadow: 0 1px 1px rgba(0,0,0,0.12), 
+                0 2px 2px rgba(0,0,0,0.12), 
+                0 4px 4px rgba(0,0,0,0.12), 
+                0 8px 8px rgba(0,0,0,0.12),
+                0 16px 16px rgba(0,0,0,0.12);
+            }
+
+            .fantasy-cat{
+                position: relative;
+                top: 270px;
+                width: 202px;
+                height: 68px;
+                margin: 0 auto;
+                border: 1px solid rgb(185, 185, 240);
+                border-radius: 7px;
+                text-align: center;
+                background-color: rgb(34, 34, 34);
+             
+            }
+            .fantasy-cat h1{
+                height: 7px;
+                text-align: center;
+                transform: translateY(-12px);
+            }
+            .fantasy-cat span{
+                color: rgb(185, 185, 240);
+            }
+
+            .testing{
+                position: relative;
+                top: 20px;
+                display: flex;
+                flex-direction: row;
+                gap: 50px;
+                align-content: center;
+                justify-content: center;
+            }
+            .aimbot{
+                width: 250px;
+                height: 410px;
+                background-color: rgb(19, 19, 19);
+               
+                border-radius: 7px;
+                
+            }
+            .triggerbot{
+                width: 250px;
+                height: 240px;
+                background-color: rgb(19, 19, 19);
+                
+                border-radius: 7px;
+            }
+            .weapon-info{
+                position: relative;
+                top: 260px;
+                left: -300px;
+                width: 250px;
+                height: 200px;
+                background-color: rgb(19, 19, 19);
+                
+                border-radius: 7px;
+            }
+
+            .config{
+                position: relative;
+                 top: 270px;
+                left: -150px;
+                width: 250px;
+                height: 200px;
+                background-color: rgb(19, 19, 19);
+                
+                border-radius: 7px;
+            }
+            .misc{
+                position: absolute;
+                top: -50px;
+                
+                width: 250px;
+                height: 200px;
+                background-color: rgb(19, 19, 19);
+                
+                border-radius: 7px;
+            }
+            .esp{
+                position: relative;
+                 
+                left: -15px;
+                width: 250px;
+                height: 200px;
+                background-color: rgb(19, 19, 19);
+                
+                border-radius: 7px;
+            }
+            .autobackstab{
+                position: relative;
+                top: 220px;
+                left: -315px;
+                width: 250px;
+                height: 200px;
+                background-color: rgb(19, 19, 19);
+                
+                border-radius: 7px;
+            }
+            h1{
+                text-align: center;
+            } 
+            hr{
+                border-color: rgb(185, 185, 240);
+                position: relative;
+                top: -15px;
+            }
+            .content{
+                transform:translateY(-12px);
+                width: 200px;
+                height: auto;
+                margin: 0 auto;
+                 
+            }
+           
+        </style>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="js/fantasy.constellation.js"></script>
+    </head>
+
+    <body>
+        <main>
+
+            <div class="fantasy-cat cool-shadow">
+                <h1>fantasy<span>.cat</span></h1>
+                <p>constellation</p>
+            </div>
+
+            <div class="testing">
+
+                <!--left-->
+
+                <div class="aimbot cool-shadow">
+                    <div class="content">
+                        <h1>humanizer</h1>
+                        <hr>
+                        
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer">
+                        <label for="humanizer">Humanizer</label><br />
+                        
+                        <input onchange="fantasy_cmd(this, 'set')" type="number" value="1" name="humanizer_key">
+                        <label for="humanizer_key">Humanizer Key #1</label><br />
+        
+                        <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_key2">
+                        <label for="humanizer_key">Humanizer Key #2</label><br />
+        
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_friendly_fire">
+                        <label for="humanizer">Humanizer Friendly Fire</label><br />
+        
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_jump_check">
+                        <label for="humanizer">Humanizer Jump Check</label><br />
+        
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_bone_priority">
+                        <label for="humanizer">Humanizer Bone Priority</label><br />
+        
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_anti_lazy">
+                        <label for="humanizer_anti_lazy">Humanizer Anti-Lazy Module</label><br />
+        
+                        <input onchange="fantasy_cmd(this, 'set')" type="number" min="0" value="50" name="humanizer_mouse_threshold">
+                        <label for="humanizer_mouse_threshold">Humanizer Mouse Threshold</label><br />
+        
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_anxiety">
+                        <label for="humanizer_anxiety">Humanizer #2 (Sensitivity/Anxiety/Pro)</label><br />
+        
+                        <input onchange="fantasy_cmd(this, 'set')" type="number" min="2" value="3" name="humanizer_anxiety_strength">
+                        <label for="humanizer_anxiety_strength">Humanizer #2 Strength</label><br />
+                    </div>
+                    
+                </div>
+                <div class="triggerbot cool-shadow">
+                    <div class="content">
+
+                        <h1>triggerbot</h1>
+                        <hr>
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="triggerbot">
+                        <label for="humanizer">Standard Triggerbot</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_triggerbot">
+                        <label for="humanizer_triggerbot">Humanizer Triggerbot</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_triggerbot_key">
+                        <label for="humanizer_triggerbot_key">Triggerbot Key</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="number" min="0" value="0" name="humanizer_triggerbot_sleep">
+                        <label for="humanizer_triggerbot_sleep">Triggerbot Sleep (Milliseconds)</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" step="0.01" type="number" min="0" value="0.02" name="humanizer_triggerbot_sensitivity">
+                        <label for="humanizer_triggerbot_sensitivity">Triggerbot Sensitivity</label>
+                    </div>
+                    
+                </div>
+                <div class="weapon-info cool-shadow">
+                    <div class="content">
+
+                        <h1>weapon cfg</h1>
+                        <hr>
+
+                        <div name="weapon_information">Weapon Information: N/A</div>
+
+                        <input onchange="fantasy_cmd(this, 'set weapon')" type="number" min="0" max="100" value="0" name="humanizer_weapon_rcs_x">
+                        <label for="humanizer_weapon_rcs">RCS X</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set weapon')" type="number" min="0" max="100" value="0" name="humanizer_weapon_rcs_x">
+                        <label for="humanizer_weapon_rcs">RCS Y</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="-1" min="-1" name="humanizer_weapon_bone">
+                        <label for="humanizer_weapon_bone">Bone</label><br />
+
+                        <button onclick="fantasy_cmd(this, 'get weapon')">Refresh Current Weapon</button>
+                       
+                    </div> 
+                </div>
+                <!--middle-->
+                <div class="config cool-shadow">
+                    <div class="content">
+                    <h1>config</h1>
+                    <hr>
+                    <button onclick="start_constellation()">Start fantasy.constellation</button>
+                    </br>
+                        <button onclick="fantasy_cmd(this, 'exit')">Exit</button>
+                    </br>
+                        <button onclick="fantasy_cmd(this, 'load')">Load Configuration</button>
+                    </br>
+                    <button onclick="fantasy_cmd(this, 'save')">Save Configuration</button>
+                    </br>
+                    <button onclick="fantasy_cmd(this, 'hwid_spoofer')">HWID Spoofer/Trust Factor Eraser</button>
+                    </div>
+                </div>
+                <div class="misc cool-shadow">
+                    <div class="content">
+                        <h1>misc</h1>
+                        <hr>
+                        <input type="checkbox" name="pure_mode_allow_modifications">
+                        <label for="pure_mode_allow_modifications">Allow Modification of Game</label><br />
+
+                        <input type="checkbox" name="pure_mode_silence">
+                        <label for="pure_mode_silence">Silence</label><br />
+
+                        <input type="checkbox" name="pure_mode_debug">
+                        <label for="pure_mode_debug">Debug Mode</label><br />
+
+                        <input type="checkbox" name="pure_mode_hypermode">
+                        <label for="pure_mode_hypermode">Constelia Hypermode</label><br />
+
+                        <input type="checkbox" name="pure_mode_always_update">
+                        <label for="pure_mode_always_update">Download Latest GUI</label>
+                    </div>
+                </div>
+
+                <!--right-->
+                <div class="esp cool-shadow">
+                    <div class="content">
+
+                        <h1>esp</h1>
+                        <hr>
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp">
+                        <label for="esp">ESP</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="corsair">
+                        <label for="corsair">LED ESP (Corsair)</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="logitech">
+                        <label for="logitech">LED ESP (Logitech)</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sound">
+                        <label for="esp_sound">Sound ESP</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="5" name="esp_sound_fov">
+                        <label for="esp_sound_fov">Sound ESP FOV</label><br />
+                       
+                    </div> 
+                </div>
+
+                <div class="autobackstab cool-shadow">
+                    <div class="content">
+
+                        <h1>autobackstab</h1>
+                        <hr>
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab">
+                        <label for="humanizer_tf2_autobackstab">TF2 Headshot Mode</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab">
+                        <label for="humanizer_tf2_autobackstab">TF2 Autobackstab</label><br />
+
+                        <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_tf2_autobackstab_key">
+                        <label for="humanizer_tf2_autobackstab_key">TF2 Autobackstab Key</label><br />
+                       
+                    </div> 
+                </div>
+            </div> 
+        </main>
+       
+    </body>
+
+</html>

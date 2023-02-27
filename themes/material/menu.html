@@ -1,0 +1,455 @@
+<!--
+    @title
+        fantasy.constellation Web GUI
+    @author
+        typedef
+    @notes
+        Be aware that a lot of these settings are hardcoded.
+    @css
+        norbsimula, stackoverflow.com, htmlcheatsheet.com, codepen.io
+-->
+<html>
+  <head>
+    <!-- css includes -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- script includes -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="js/fantasy.constellation.js"></script>
+
+    <!-- title -->
+    <title>constellation</title>
+
+    <!-- script -->
+    <script>
+      /// start timer to check status of Constellation
+      window.setInterval(check_status, 3000);
+
+      function check_status() {
+        /// get current constellation game.
+        game = constellation.game();
+
+        /// constellation isn't even running.
+        if (game == null) {
+          /// hide settings
+          $("#settings").hide();
+
+          /// set constellation button text
+          $("#start_button").html("Calibrate (Constellation isn't running)");
+
+          /// disable our start button
+          $("#start_button").prop("disabled", true);
+
+          /// disable the HWID button.
+          $("#hwid_spoofer").prop("disabled", true);
+
+          /// disable the reload button.
+          $("#reload_scripts").prop("disabled", true);
+
+          /// disable the exit button.
+          $("#exit_button").prop("disabled", true);
+          return;
+        }
+
+        /// remove our disables
+        $("#start_button").prop("disabled", false);
+        $("#hwid_spoofer").prop("disabled", false);
+        $("#reload_scripts").prop("disabled", false);
+        $("#exit_button").prop("disabled", false);
+
+        /// show all our settings
+        $("#settings").show();
+
+        /// change text
+        $("#start_button").html("Calibrate");
+
+        /// is this game tf2
+        if (game == "TF2") $("#tf2").show();
+        else $("#tf2").hide();
+
+        /// change the title
+        forum = constellation.forums();
+        $(document).prop("title", "constellation - " + forum["username"]);
+      }
+    </script>
+  </head>
+
+  <body>
+    <div>Pre-Calibration Settings:</div>
+
+    <label class="pure-material-checkbox">
+      <input type="checkbox" name="pure_mode_silence" />
+      <span>Silence</span>
+    </label>
+    <br />
+
+    <label class="pure-material-checkbox">
+      <input type="checkbox" name="pure_mode_hypermode" />
+      <span>Constelia Hypermode</span>
+    </label>
+    <br />
+
+    <label class="pure-material-checkbox">
+      <input type="checkbox" name="pure_mode_always_update" />
+      <span>Download Latest GUI</span>
+    </label>
+    <br />
+
+    <button
+      class="pure-material-button-contained"
+      disabled
+      id="start_button"
+      onclick="start_constellation()"
+    >
+      Loading...
+    </button>
+
+    <button
+      class="pure-material-button-contained"
+      disabled
+      id="hwid_spoofer"
+      onclick="fantasy_cmd(this, 'hwid_spoofer')"
+    >
+      HWID Spoofer/Trust Factor Eraser
+    </button>
+
+    <button
+      class="pure-material-button-contained"
+      disabled
+      id="reload_scripts"
+      onclick="fantasy_cmd(this, 'reload_scripts')"
+    >
+      Reload Lua Scripts
+    </button>
+    <button
+      class="pure-material-button-contained"
+      disabled
+      id="exit_button"
+      onclick="fantasy_cmd(this, 'exit')"
+    >
+      Exit
+    </button>
+
+    <hr />
+
+    <div id="settings" style="display: none">
+      <button
+        class="pure-material-button-contained"
+        onclick="fantasy_cmd(this, 'load')"
+      >
+        Load Configuration
+      </button>
+      <button
+        class="pure-material-button-contained"
+        onclick="fantasy_cmd(this, 'save')"
+      >
+        Save Configuration
+      </button>
+
+      <hr />
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="humanizer"
+        />
+        <span>Humanizer</span>
+      </label>
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="number"
+          value="1"
+          name="humanizer_key"
+        />
+        <label for="first">Humanizer Key #1</label>
+      </div>
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="number"
+          value="0"
+          name="humanizer_key2"
+        />
+        <label for="first">Humanizer Key #2</label>
+      </div>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="humanizer_friendly_fire"
+        />
+        <span>Humanizer Friendly Fire</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="humanizer_jump_check"
+        />
+        <span>Humanizer Jump Check</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="humanizer_bone_priority"
+        />
+        <span>Humanizer Bone Priority</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="humanizer_anti_lazy"
+        />
+        <span>Humanizer Anti-Lazy Module</span>
+      </label>
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="number"
+          min="0"
+          value="50"
+          name="humanizer_mouse_threshold"
+        />
+        <label for="first">Humanizer Mouse Threshold</label>
+      </div>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="humanizer_anxiety"
+        />
+        <span>Humanizer #2 (Sensitivity/Anxiety/Pro)</span>
+      </label>
+      <br />
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="number"
+          min="2"
+          value="3"
+          name="humanizer_anxiety_strength"
+        />
+        <label for="first">Humanizer #2 Strength</label>
+      </div>
+      <br />
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="triggerbot"
+        />
+        <span>Standard Triggerbot</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="humanizer_triggerbot"
+        />
+        <span>Humanizer Triggerbot</span>
+      </label>
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="number"
+          value="0"
+          name="humanizer_triggerbot_key"
+        />
+        <label for="first">Triggerbot Key</label>
+      </div>
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="number"
+          min="0"
+          value="0"
+          name="humanizer_triggerbot_sleep"
+        />
+        <label for="first">Triggerbot Sleep (Milliseconds)</label>
+      </div>
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          step="0.01"
+          type="number"
+          min="0"
+          value="0.02"
+          name="humanizer_triggerbot_sensitivity"
+        />
+        <label for="first">Triggerbot Sensitivity</label>
+      </div>
+      <br />
+      <br />
+
+      <div name="weapon_information">Weapon Information: N/A</div>
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set weapon')"
+          type="number"
+          value="-1"
+          min="-1"
+          name="humanizer_weapon_bone"
+        />
+        <label for="first">Bone</label>
+      </div>
+      <br />
+
+      <button
+        class="pure-material-button-contained"
+        onclick="fantasy_cmd(this, 'get weapon')"
+      >
+        Refresh Current Weapon
+      </button>
+
+      <br /><br /><br />
+
+      <label class="pure-material-checkbox">
+        <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp" />
+        <span>ESP</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="corsair"
+        />
+        <span>LED ESP (Corsair)</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="logitech"
+        />
+        <span>LED ESP (Logitech)</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="esp_sound"
+        />
+        <span>Sound ESP</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="esp_sonar"
+        />
+        <span>Sonar ESP</span>
+      </label>
+      <br />
+
+      <label class="pure-material-checkbox">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="checkbox"
+          name="esp_sound_surround"
+        />
+        <span>Sound ESP (Surround)</span>
+      </label>
+
+      <div class="input-group">
+        <input
+          onchange="fantasy_cmd(this, 'set')"
+          type="number"
+          value="5"
+          name="esp_sound_fov"
+        />
+        <label for="first">Sound ESP FOV</label>
+      </div>
+      <br />
+      <br />
+
+      <div id="tf2" style="display: none">
+        <label class="pure-material-checkbox">
+          <input
+            onchange="fantasy_cmd(this, 'set')"
+            type="checkbox"
+            name="humanizer_tf2_autobackstab"
+          />
+          <span>TF2 Headshot Mode</span>
+        </label>
+
+        <label class="pure-material-checkbox">
+          <input
+            onchange="fantasy_cmd(this, 'set')"
+            type="checkbox"
+            name="humanizer_tf2_autobackstab"
+          />
+          <span>TF2 Autobackstab</span>
+        </label>
+
+        <div class="input-group">
+          <input
+            onchange="fantasy_cmd(this, 'set')"
+            type="number"
+            value="0"
+            name="humanizer_tf2_autobackstab_key"
+          />
+          <label for="first">TF2 Autobackstab Key</label>
+        </div>
+        <br />
+
+        <div class="input-group">
+          <input
+            onchange="fantasy_cmd(this, 'set')"
+            type="number"
+            value="0"
+            name="esp_medic"
+          />
+          <label for="first">Medic Sound ESP (Charge/Uber/Drop Alerts)</label>
+        </div>
+        <br />
+
+        <div class="input-group">
+          <input
+            onchange="fantasy_cmd(this, 'set')"
+            type="number"
+            value="0"
+            name="esp_spy"
+          />
+          <label for="first">Spy Sound ESP (Disguised/Cloaked)</label>
+        </div>
+        <br />
+      </div>
+
+      <div id="lua"></div>
+    </div>
+  </body>
+</html>

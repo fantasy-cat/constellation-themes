@@ -1,0 +1,189 @@
+<html>
+  <head>
+    <title>spezz.consellation</title>
+    <link rel="stylesheet" href="js/jquery-ui.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  </head>
+  <body>
+    <main class="w-full min-h-screen lg:p-20 bg-[#4F545A] grid place-items-center text-white">
+      <div class="w-full lg:w-10/12 bg-wGrey rounded-3xl shadow-2xl shadow-neutral-700">
+        <div class="group">
+          <div>Pre-Calibration Settings:</div>
+          <div class="intend-box">
+            <div class="flex md:justify-between md:w-fit md:gap-3">
+              <div class="">
+                <input title="No sound, notificaitons, or cursor." id="pure_mode_silence" class="" type="checkbox" name="pure_mode_silence" />
+                <label for="pure_mode_silence">Silence</label>
+              </div>
+              <div class="">
+                <input title="Higher CPU usage, but Constellation runs faster." id="pure_mode_hypermode" type="checkbox" name="pure_mode_hypermode" />
+                <label for="pure_mode_hypermode">Constelia Hypermode</label>
+              </div>
+              <div class="">
+                <input id="pure_mode_always_update" type="checkbox" name="pure_mode_always_update" />
+                <label for="pure_mode_always_update">Download Latest GUI</label>
+              </div>
+            </div>
+          </div>
+          <div class="button-group">
+            <button title="Activates Constellation" disabled id="start_button" onclick="start_constellation()">Loading...</button>
+            <button disabled id="hwid_spoofer" onclick="fantasy_cmd(this, 'hwid_spoofer')">HWID Spoofer/Trust Factor Eraser</button>
+            <button disabled id="reload_scripts" onclick="fantasy_cmd(this, 'reload_scripts')">Reload Lua Scripts</button>
+            <button disabled id="exit_button" onclick="fantasy_cmd(this, 'exit')">Exit</button>
+          </div>
+        </div>
+        <!-- Exit First Group End -->
+        <div id="settings" style="display: none">
+          <div class="group py-2">
+            <div class="button-group w-fit gap-x-3">
+              <button onclick="fantasy_cmd(this, 'load')">Load Configuration</button>
+              <button onclick="fantasy_cmd(this, 'save')">Save Configuration</button>
+            </div>
+          </div>
+          <div class="group">
+            <div class="check-wrapper">
+              <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer" />
+              <label for="humanizer">Humanizer</label>
+            </div>
+            <div class="flex justify-between gap-3">
+              <div class="number-wrapper">
+                <label for="humanizer_key">Humanizer Key #1</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="1" name="humanizer_key" />
+              </div>
+              <div class="number-wrapper">
+                <label for="humanizer_key">Humanizer Key #2</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_key2" />
+              </div>
+            </div>
+            <div class="intend-box flex gap-5">
+              <div class="check-wrapper">
+                <input title="Humanizer will aim at team." onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_friendly_fire" />
+                <label for="humanizer">Humanizer Friendly Fire</label>
+              </div>
+              <div class="check-wrapper">
+                <input title= "Humanizer will activate on jumping targets."onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_jump_check" />
+                <label for="humanizer">Humanizer Jump Check</label>
+              </div>
+              <div class="check-wrapper">
+                <input title="Has humanizer focus on specified bone number." onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_bone_priority" />
+                <label for="humanizer">Humanizer Bone Priority</label>
+              </div>
+            </div>
+            <div class="number-wrapper border-0 py-0">
+              <label for="humanizer_weapon_bone">Bone</label>
+              <div class="flex">
+                <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="-1" min="-1" class="mb-0 rounded-none border-0" name="humanizer_weapon_bone" />
+              </div>
+            </div>
+            <div class="number-wrapper">
+              <label for="humanizer_mouse_threshold">Humanizer Mouse Threshold</label>
+              <input onchange="fantasy_cmd(this, 'set')" type="number" min="0" value="50" name="humanizer_mouse_threshold" />
+            </div>
+            <div class="check-wrapper pb-0">
+              <input title="Lowers mouse sensitivity whenever aiming. Helps lock onto target." onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_anxiety" />
+              <label for="humanizer_anxiety">Humanizer #2 (Sensitivity/Anxiety/Pro)</label>
+            </div>
+            <div class="number-wrapper">
+              <label for="humanizer_anxiety_strength">Humanizer #2 Strength</label>
+              <input onchange="fantasy_cmd(this, 'set')" type="number" min="2" value="3" name="humanizer_anxiety_strength" />
+            </div>
+            <div id="lua"></div>
+          </div>
+          <div class="group">
+            <div class="p-2 flex">
+              <div class="check-wrapper">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="triggerbot" />
+                <label for="humanizer">Standard Triggerbot</label>
+              </div>
+              <div class="check-wrapper">
+                <input title="Combines triggerbot with humanizer." onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_triggerbot" />
+                <label for="humanizer_triggerbot">Humanizer Triggerbot</label>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <div class="number-wrapper">
+                <label for="humanizer_triggerbot_key">Triggerbot Key</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_triggerbot_key" />
+              </div>
+              <div class="number-wrapper">
+                <label for="humanizer_triggerbot_sleep">Triggerbot Sleep (Milliseconds)</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" min="0" value="0" name="humanizer_triggerbot_sleep" />
+              </div>
+              <div class="number-wrapper">
+                <label for="humanizer_triggerbot_sensitivity">Triggerbot Sensitivity</label>
+                <input onchange="fantasy_cmd(this, 'set')" step="0.01" type="number" min="0" value="0.02" name="humanizer_triggerbot_sensitivity" />
+              </div>
+            </div>
+            <div class="p-2 flex">
+              <div class="check-wrapper">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp" />
+                <label for="esp">ESP</label>
+              </div>
+              <div class="check-wrapper">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="corsair" />
+                <label for="corsair">LED ESP (Corsair)</label>
+              </div>
+              <div class="check-wrapper">
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="logitech" />
+                <label for="logitech">LED ESP (Logitech)</label>
+              </div>
+              <div class="check-wrapper">
+                <input title="beeps in general location of enemy." onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sound" />
+                <label for="esp_sound">Sound ESP</label>
+              </div>
+              <div class="check-wrapper">
+                <input title="Beeps louder when crosshair closer." onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sonar" />
+                <label for="esp_sound">Sonar ESP</label>
+              </div>
+              <div class="check-wrapper">
+                <input title="Sound ESP but uses different sound channels to indicate direction." onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sound_surround" />
+                <label for="esp_sound">Sound ESP (Surround)</label>
+              </div>
+            </div>
+            <div class="border p-3 border-blue-200 border-opacity-30 flex-auto">
+              <div class="number-wrapper border-0 py-0">
+                <label for="esp_sound_fov">Sound ESP FOV</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="5" name="esp_sound_fov" />
+                <div name="weapon_information" class="inline-block">
+                  <h2>Weapon Information: N/A</h2>
+                </div>
+				<button class="shrink-0 py-0 rounded-none" onclick="fantasy_cmd(this, 'get weapon')">Refresh Current Weapon</button>
+              </div>
+            </div>
+          </div>
+          <div id="tf2" style="/* display: none */">
+            <div class="group flex items-stretch">
+              <div class="number-wrapper">
+                <label for="humanizer_tf2_autobackstab_key">TF2 Autobackstab Key</label>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_tf2_autobackstab_key" />
+              </div>
+              <div class="">
+                <div class="check-wrapper my-1 py-0">
+                  <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab" />
+                  <label for="humanizer_tf2_autobackstab">TF2 Headshot Mode</label>
+                </div>
+                <div class="check-wrapper my-1 py-0">
+                  <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab" />
+                  <label for="humanizer_tf2_autobackstab">TF2 Autobackstab</label>
+                </div>
+                <div class="check-wrapper my-1 py-0">
+                  <input title="Notifies if Medic has used Uber" onchange="fantasy_cmd(this, 'set')" type="checkbox" value="0" name="esp_medic" />
+                  <label for="esp_medic">Medic Sound ESP (Charge/Uber/Drop Alerts)</label>
+                </div>
+                <div class="check-wrapper my-1 py-0">
+                  <input title="Notifies if you are looking at a spy." onchange="fantasy_cmd(this, 'set')" type="checkbox" value="0" name="esp_spy" />
+                  <label for="esp_spy">Spy Sound ESP (Disguised/Cloaked)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/customjs.js"></script>
+    <script defer src="js/fantasy.constellation.js"></script>
+  </body>
+</html>

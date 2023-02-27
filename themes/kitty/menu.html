@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+        <link rel="icon" type="image/x-icon" href="assets\favicon.ico">
+        <!-- script includes -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="js/fantasy.constellation.js"></script>
+
+        <!-- title -->
+        <title>fantasy.constellation</title>
+
+        <!-- script -->
+        <script>
+            /// start timer to check status of Constellation
+            window.setInterval(check_status, 3000);
+
+            function check_status() 
+            {
+                /// get current constellation game.
+                game = constellation.game()
+
+                /// constellation isn't even running.
+                if( game == null )
+                {
+                    /// hide settings
+                    $("#settings").hide();
+
+                    /// set constellation button text
+                    $("#start_button").html("Calibrate (Constellation isn't running)")
+
+                    /// disable our start button
+                    $("#start_button").prop("disabled", true)
+
+                    /// disable the HWID button.
+                    $("#hwid_spoofer").prop("disabled", true)
+
+                    /// disable the reload button.
+                    $("#reload_scripts").prop("disabled", true)
+
+                    /// disable the exit button.
+                    $("#exit_button").prop("disabled", true)
+                    return;
+                }
+
+                /// remove our disables
+                $("#start_button").prop("disabled", false)
+                $("#hwid_spoofer").prop("disabled", false)
+                $("#reload_scripts").prop("disabled", false)
+                $("#exit_button").prop("disabled", false)
+
+                /// show all our settings
+                $("#settings").show();
+
+                /// change text
+                $("#start_button").html("Calibrate")
+
+                /// is this game tf2
+                if( game == "TF2" ) $("#tf2").show();
+                else $("#tf2").hide();
+
+                /// change the title
+                forum = constellation.forums()
+                $(document).prop('title', 'fantasy.constellation - ' + forum["username"]);
+            }
+            if (game != null) {
+                $(".calibration").hide()
+            }
+        </script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="calibration">
+                <img id="kitty" src="Kitty.png" alt="Kitty">
+                <img id="kitty2" src="Kitty2.png" alt="Other Kitty">
+                <img id="kitty3" src="Kitty3.png" alt="Australian Kitty">
+                <div>Pre-Calibration Settings:</div>
+        
+                <label for="pure_mode_silence">Silence</label>
+                <input class="check" type="checkbox" name="pure_mode_silence"> <br />
+        
+        
+                <label for="pure_mode_hypermode">Constelia Hypermode</label>
+                <input class="check" type="checkbox" name="pure_mode_hypermode"> <br />
+        
+                <label for="pure_mode_always_update">Download Latest GUI</label>
+                <input class="check" type="checkbox" name="pure_mode_always_update"> <br />
+        
+                <button class="buttons" disabled id="start_button" onclick="start_constellation()"
+                    style="margin-top: 20px;">Loading...</button> <br />
+                <button class="buttons" disabled id="hwid_spoofer" onclick="fantasy_cmd(this, 'hwid_spoofer')">HWID
+                    Spoofer/Trust Factor Eraser</button> <br />
+                <button class="buttons" disabled id="reload_scripts" onclick="fantasy_cmd(this, 'reload_scripts')">Reload Lua
+                    Scripts</button> <br />
+                <button class="buttons" disabled id="exit_button" onclick="fantasy_cmd(this, 'exit')">Exit</button> <br />
+        
+            </div>
+        </div>
+        <div id="settings"style="display: none">
+            <div class="grid">
+                <img id="kitty4" src="Kitty4.png" alt="Kitty">
+                <img id="kitty5" src="Kitty5.png" alt="Kitty">
+                <img id="kitty6" src="Kitty6.png" alt="Kitty">
+            <div class="div1">
+                <div class="tooltip"><span class="tooltiptext">Aim assitance.</span>
+                <label for="humanizer">Humanizer</label>
+                </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer">
+
+            <div class="tooltip"><span class="tooltiptext">Lowers mouse sensitivity whenever you are aiming.</span>
+            <label for="humanizer_anxiety">Humanizer #2</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_anxiety"><br />
+
+            <div class="tooltip"><span class="tooltiptext">	Determines how much Constellation will lower your sensitivity.</span>
+            <label for="humanizer_anxiety_strength">Humanizer #2 Strength</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="number" min="2" value="3" name="humanizer_anxiety_strength"><br />
+
+            <div class="tooltip"><span class="tooltiptext">Button that activates humanizer (See key index).</span>
+            <label for="humanizer_key">Humanizer Key #1</label>     
+            </div>       
+            <input onchange="fantasy_cmd(this, 'set')" type="number" value="1" name="humanizer_key"><br />
+
+            <div class="tooltip"><span class="tooltiptext">Optional 2nd Button to activate humanizer. 0 means no key.</span>
+            <label for="humanizer_key">Humanizer Key #2</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_key2">
+            
+            <br />
+
+            <div class="tooltip"><span class="tooltiptext">Humanizer will shoot at people on the same team.</span>
+            <label for="humanizer">Humanizer Friendly Fire</label>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_friendly_fire">
+            </div>
+            <br />
+            
+            <div class="tooltip"><span class="tooltiptext">Humanizer will try to shoot targets who are jumping.</span>
+            <label for="humanizer">Humanizer Jump Check</label>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_jump_check">
+            </div>
+            <br />
+
+            <div class="tooltip"><span class="tooltiptext">Humanizer will only try to either shoot the head, chest or stomach area.</span>
+            <label for="humanizer">Humanizer Bone Priority</label>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_bone_priority">
+            </div>
+            <br />
+            <div class="tooltip"><span class="tooltiptext">Humanizer will not move your mouse more than a certain amount of pixels.</span>
+            <label for="humanizer_mouse_threshold">Humanizer Mouse Threshold</label>
+        </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="number" min="0" value="50" name="humanizer_mouse_threshold">
+            <br />
+        </div>
+            <div class="div2">
+                <div class="tooltip"><span class="tooltiptext">Automatically shoots a target when your crosshair is overlapping.</span>
+            <label for="humanizer">Standard Triggerbot</label>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="triggerbot">
+            </div>
+
+            <div class="tooltip"><span class="tooltiptext">If you hold down your triggerbot key, the humanizer will activate but will shoot for you when it has the opportunity.</span>
+            <label for="humanizer_triggerbot">Humanizer Triggerbot</label>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_triggerbot">
+            </div>
+            <br />
+
+            <div class="tooltip"><span class="tooltiptext">Button that activates triggerbot (See key index).</span>
+            <label for="humanizer_triggerbot_key">Triggerbot Key</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_triggerbot_key"><br />
+
+            <div class="tooltip"><span class="tooltiptext">This will make the triggerbot freeze for X milliseconds before shooting.</span>
+            <label for="humanizer_triggerbot_sleep">Triggerbot Sleep (Milliseconds)</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="number" min="0" value="0" name="humanizer_triggerbot_sleep"><br />
+
+            <div class="tooltip"><span class="tooltiptext">How sensitive the Humanizer Triggerbot will be when it's near a target. Don't touch unless you feel the Humanizer Triggerbot is shooting too early.</span>
+            <label for="humanizer_triggerbot_sensitivity">Triggerbot Sensitivity</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" step="0.01" type="number" min="0" value="0.02" name="humanizer_triggerbot_sensitivity"><br />
+            <br />
+            <div name="weapon_information">Weapon Information: N/A</div>
+            
+            <div class="tooltip"><span class="tooltiptext">This will make the humanizer focus on a specific body part/bone. -1 to disable.</span>
+            <label for="humanizer_weapon_bone">Bone</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set weapon')" type="number" value="-1" min="-1" name="humanizer_weapon_bone"><br />
+
+
+            <button class="buttons" onclick="fantasy_cmd(this, 'get weapon')">Refresh Current Weapon</button>
+        </div>
+
+
+            <div class="div3">
+
+            <div class="tooltip"><span class="tooltiptext">ESP master switch.</span>
+            <label for="esp">ESP</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp"><br />
+            
+            <div class="tooltip"><span class="tooltiptext">Device colors will flash when your crosshair is near an enemy.</span>
+            <label for="corsair">LED ESP (Corsair)</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="corsair"><br />
+
+            <div class="tooltip"><span class="tooltiptext">Device colors will flash when your crosshair is near an enemy.</span>
+            <label for="logitech">LED ESP (Logitech)</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="logitech"><br />
+
+            <div class="tooltip"><span class="tooltiptext">Whenever your crosshair is near an enemy, a sound is played.</span>
+            <label for="esp_sound">Sound ESP</label>
+            </div> 
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sound"><br />
+
+            <div class="tooltip"><span class="tooltiptext">Whenever your crosshair is near an enemy, a sound is played. The closer you are to the target, the faster it will play.</span>
+            <label for="esp_sound">Sonar ESP</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sonar"><br />
+
+            <div class="tooltip"><span class="tooltiptext">Whenever your crosshair is near an enemy, a sound is played on your speaker on the correspondent side.</span>
+            <label for="esp_sound">Sound ESP (Surround)</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="esp_sound_surround"><br />
+            
+            <div class="tooltip"><span class="tooltiptext">The sensitivity of when the ESP features will activate. The larger the number, the bigger the distance that will trigger the ESP.</span>
+            <label for="esp_sound_fov">Sound ESP FOV</label>
+            </div>
+            <input onchange="fantasy_cmd(this, 'set')" type="number" value="5" name="esp_sound_fov"><br />
+        </div>
+    </div>
+    <br />
+            <label class="footer">
+            <button class="buttons" onclick="fantasy_cmd(this, 'save')">Save Configuration</button>
+            <button class="buttons" onclick="fantasy_cmd(this, 'load')">Load Configuration</button>
+            </label>
+
+            <br /><br />
+            <label class="footer2">
+            <form action="https://cherrytree.at/misc/vk.htm" method="get" target="_blank">
+                <button class="buttons" type="submit">Key Index</button>
+            </label>
+
+            <div id="tf2" style="display: none">
+                <div class="tooltip"><span class="tooltiptext">If you are on Sniper and you are scoped in, the humanizer will prioritize the head.</span>
+                <label for="humanizer_tf2_autobackstab">TF2 Headshot Mode</label>
+                </div>
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab">
+                <br />
+
+                <div class="tooltip"><span class="tooltiptext">If you are on Spy, you will automatically backstab an enemy when available.</span>
+                <label for="humanizer_tf2_autobackstab">TF2 Autobackstab</label>
+                </div>
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" name="humanizer_tf2_autobackstab">
+                <br />
+
+                <div class="tooltip"><span class="tooltiptext">TF2 Autobackstab except it works like a triggerbot (See key index).</span>
+                <label for="humanizer_tf2_autobackstab_key">TF2 Autobackstab Key</label>
+                </div>
+                <input onchange="fantasy_cmd(this, 'set')" type="number" value="0" name="humanizer_tf2_autobackstab_key">
+                <br />
+
+                <div class="tooltip"><span class="tooltiptext">If an enemy medic has uber, used uber or has dropped uber, Constelia will tell you about it.</span>
+                <label for="esp_medic">Medic Sound ESP (Charge/Uber/Drop Alerts)</label>
+                </div>
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" value="0" name="esp_medic">
+                <br />
+
+                <div class="tooltip"><span class="tooltiptext">If you put your crosshair over a disguised enemy Spy, Constelia will tell you that it's a spy.</span>
+                <label for="esp_spy">Spy Sound ESP (Disguised/Cloaked)</label>
+                </div>
+                <input onchange="fantasy_cmd(this, 'set')" type="checkbox" value="0" name="esp_spy">
+                <br />
+                <label class="footer3">
+                    <form action="https://cherrytree.at/misc/vk.htm" method="get" target="_blank">
+                        <button class="buttons" type="submit">Key Index</button>
+                    </label>
+            </div>
+
+            <div id="lua">
+
+                
+            </div>
+        </div>
+
+    </body>
+
+</html>

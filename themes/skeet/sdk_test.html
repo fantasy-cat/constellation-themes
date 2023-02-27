@@ -1,0 +1,86 @@
+<!--
+    @title
+        fantasy.constellation Web GUI - sdk_test.html
+    @author
+        typedef
+    @notes
+        Testing
+-->
+<html>
+
+    <head>
+        <!-- script includes -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="js/fantasy.constellation.js"></script>
+
+        <!-- title -->
+        <title>fantasy.constellation - sdk test.html</title>
+
+        <!-- script -->
+        <script>
+
+            /// <summary>
+            /// Sends fantasy.cmds to get player data.
+            /// Note: get players tends to be out of sync due to timing.
+            /// </summary>
+            /// <returns></returns>
+            function get_players() 
+            {
+                if( fantasy_cmd(null, "get localplayer") )
+                {
+                    $("#localplayer_information").html(
+                        `
+                        Name: ${fantasy_constellation.localplayer.name}<br />
+                        Steam: ${fantasy_constellation.localplayer.steam}<br />
+                        X: ${fantasy_constellation.localplayer.x}<br />
+                        Y: ${fantasy_constellation.localplayer.y}<br />
+                        Z: ${fantasy_constellation.localplayer.z}<br />
+                        Viewangles X: ${fantasy_constellation.localplayer.viewangles.x}<br />
+                        Viewangles Y: ${fantasy_constellation.localplayer.viewangles.y}<br />
+                        Viewangles Z: ${fantasy_constellation.localplayer.viewangles.z}<br />
+                        `
+                    );
+                }
+
+                if( fantasy_cmd(null, "get players") )
+                {
+                    $('#player_information').html("<th>Name</th><th>Steam</th>")
+
+                    for( const property in fantasy_constellation.players )
+                    {
+                        const json_information = JSON.parse(fantasy_constellation.players[property])
+                        $('#player_information').append(`<tr><td>${json_information.name}</td><td>${json_information.steam}</td></tr>`);
+                    }
+                }
+            }
+
+            function on_move_mouse( )
+            {
+                var mouse_data =
+                {
+                    x: parseInt($('#mouse_x').val()),
+                    y: parseInt($('#mouse_y').val())
+                }
+
+                fantasy_cmd(JSON.stringify(mouse_data), "move mouse")
+            }
+
+            window.setInterval(get_players, 1000);
+        </script>
+    </head>
+
+    <body>
+        <div id="localplayer_information"></div>
+
+        <br />
+
+        <table id="player_information"></table> 
+
+        <br />
+
+        Mouse X: <input type="number" value="0"  id="mouse_x"><br />
+        Mouse Y: <input type="number" value="0"  id="mouse_y"><br />
+        <button onclick="on_move_mouse()">Move Mouse</button>
+    </body>
+
+</html>

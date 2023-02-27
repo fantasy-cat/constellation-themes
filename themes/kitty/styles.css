@@ -1,0 +1,266 @@
+body{
+    background-color: #1A1A1D;
+    color: aliceblue;
+    font-family: "Ubuntu", sans-serif;
+}   
+
+.calibration{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    width: 400px;
+    height: 200px;
+    margin: -165px 0 0 -265px;
+    border: 2px solid aliceblue;
+    padding: 63px;
+    border-radius: 10% / 20%;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.buttons{
+      appearance: none;
+      background-color: #c3073f;
+      border: 1px solid #1e1e2826;
+      border-radius: 5px;
+      box-shadow: #1e1e281a 0 1px 0;
+      box-sizing: border-box;
+      color:aliceblue;
+      cursor: pointer;
+      display: inline-block;
+      font-family: "Ubuntu", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 15px;
+      padding: 4px 14px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      touch-action: manipulation;
+      vertical-align: middle;
+      white-space: nowrap;
+      margin-top: 3px;
+      margin-bottom: 3px;
+      margin-left: 5px;
+      margin-right: 5px;
+}
+
+.buttons-3:focus:not(:focus-visible):not(.focus-visible) {
+  box-shadow: none;
+    outline: none;
+}
+
+.buttons-3:hover {
+ background-color: #950740;
+}
+    
+.buttons-3:focus {
+ box-shadow: #6f2232 0 0 0 3px;
+ outline: none;
+}
+
+.buttons-3:disabled {
+ background-color: #4e4e50;
+ border-color: #1b1f231a;
+  color: #ffffffcc;
+  cursor: default;
+}
+
+.buttons-3:active {
+      background-color: #c3073f;
+      box-shadow: #14462033 0 1px 0 inset;
+}
+
+#kitty {
+    position:absolute;
+    right: 0px;
+    left: 525px;
+    top: 150px;
+    bottom: 0px;
+    width: 75px;
+    z-index: 1;
+}
+
+#kitty2 {
+    position: absolute;
+    right: 0px;
+    left: -75px;
+    top: 100px;
+    bottom: 0px;
+    width: 75px;
+    z-index: 1;
+}
+
+#kitty3 {
+  position: absolute;
+  right: 0px;
+  left: 90px;
+  top: 325px;
+  bottom: 0px;
+  width: 95px;
+  z-index: 1;
+}
+
+#kitty4 {
+  position: absolute;
+  right: 0px;
+  left: 300px;
+  top: 436px;
+  bottom: 0px;
+  width: 95px;
+  z-index: 1;
+}
+
+#kitty5 {
+  position: absolute;
+  right: 0px;
+  left: 400px;
+  top: 436px;
+  bottom: 0px;
+  width: 95px;
+  z-index: 1;
+}
+
+#kitty6 {
+  position: absolute;
+  right: 0px;
+  left: 500px;
+  top: 436px;
+  bottom: 0px;
+  width: 95px;
+  z-index: 1;
+}
+
+
+#exit_button {
+    background-color: #640000;
+}
+
+.grid {
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    position: center;
+    justify-content: center;
+    margin-top: 27%;
+    margin-bottom: 0;
+    margin-right: 10%;
+    margin-left: 10%;
+    }
+    
+    .div1 { grid-area: 1 / 1 / 2 / 2;
+        border: 2px solid aliceblue;
+        border-radius: 10% 0% 0% 10% / 20%;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        line-height: 1.8;} 
+    .div2 { grid-area: 1 / 2 / 2 / 3; 
+        border: 2px solid aliceblue;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        line-height: 1.8;}
+    .div3 { grid-area: 1 / 3 / 2 / 4; 
+        border: 2px solid aliceblue;
+        border-radius: 0% 10% 10% 0% / 20%;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        line-height: 1.8;}
+
+.footer{
+    margin: 0;
+    position: absolute;
+    top: 82%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: aliceblue;
+    color: #4e4e50;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+  .tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%; 
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: aliceblue transparent transparent transparent;
+  }
+
+  .tooltip .tooltiptext {
+    opacity: 0;
+    transition: opacity 0.7s;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    opacity: 1;
+  }
+
+  .footer2{
+    margin: 0;
+    position: absolute;
+    top: 86%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#tf2{
+  position: absolute;
+  top: 350px;
+  left: 50%;
+  width: 400px;
+  height: 150px;
+  margin: -165px 0 0 -265px;
+  border: 2px solid aliceblue;
+  padding: 63px;
+  border-radius: 10% / 20%;
+  text-align: center;
+  line-height: 1.4;
+}
+
+#lua{
+  position: absolute;
+  top: 800px;
+  left: -150px;
+  width: 800px;
+  height: 150px;
+  margin: -165px 0 0 -265px;
+  border: 2px solid aliceblue;
+  padding: 63px;
+  border-radius: 10% / 20%;
+  text-align: center;
+  line-height: 1.4;
+}

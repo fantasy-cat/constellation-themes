@@ -1,0 +1,192 @@
+
+
+<!--
+    @title
+        fantasy.constellation Web Radar
+    @author
+        Moyo
+    @notes
+        simple webradar made with the constellation SDK
+-->
+<html>
+    <head>
+        <!-- script includes -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="js/fantasy.constellation.js"></script>
+
+        <!-- title -->
+        <title>Webradar</title>
+    </head>
+
+    <body>
+        <canvas id="mapGrid" width="500" height="500" style="border:1px solid #d1ccccc5;">
+            If you see this text your browser can't draw the canvas
+        </canvas>
+
+        <div id="settings">
+            <input onchange="setCanvasSize(this.value)" type="number" id="canvasSize" value="500">
+            <label for="canvasSize">canvas size</label><br/>
+
+            <input onchange="setDotSize(this.value)" type="number" id="dotSize" value="3">
+            <label for="dotSize">player dot size</label><br/>
+
+            <input onchange="setRefreshrate(this.value)" type="number" id="refreshRate" value="25">
+            <label for="refreshRate">refresh interval (in ms)</label><br/>
+
+            <input onchange="toggleTeam(this.checked)" type="checkbox" id="drawTeam" checked>
+            <label for="drawTeam">draw own team</label><br/>
+
+            <input onchange="toggleOwnName(this.checked)" type="checkbox" id="drawOwnName" checked>
+            <label for="drawOwnName">draw own name</label><br/>
+
+            <input onchange="toggleViewangles(this.checked)" type="checkbox" id="drawViewangles" checked>
+            <label for="drawViewangles">draw player viewangles</label><br/>
+
+            <input onchange="setViewangleLength(this.value)" type="number" id="viewangleLength" value="50">
+            <label for="viewangleLength">viewangle length</label>
+        </div>
+
+        <script>
+            // variables
+            const m_angEyeAngles = constellation.memory.netvar("DT_CSPlayer", "m_angEyeAngles[0]");
+            var intervalID = 0;
+            var refreshrate = 25;
+            var drawTeam = true;
+            var dotSize = 3;
+            var drawViewangle = true;
+            var viewangleLength = 50;
+            var drawOwnName = true;
+
+            // canvas to draw players on
+            var canvas = document.getElementById("mapGrid");
+            var ctx = canvas.getContext("2d");
+
+            // functions
+            function drawPoint(context, x, y, label, color, size) {
+                if (color == null) {color = '#000';}
+                if (size == null) {size = 5;}
+
+                var pointX = Math.round(x);
+                var pointY = Math.round(y);
+
+                context.beginPath();
+                context.fillStyle = color;
+                context.arc(pointX, pointY, size, 0 * Math.PI, 2 * Math.PI);
+                context.fill();
+                
+                if (label) {
+                    var textX = pointX;
+                    var textY = Math.round(pointY - size - 3);
+                    
+                    context.font = '14px Consolas';
+                    context.fillStyle = color;
+                    context.textAlign = 'center';
+                    context.fillText(label, textX, textY);
+                }
+            }
+
+            function setCanvasSize(size){
+                canvas.width = size;
+                canvas.height = size;
+            }
+
+            function setDotSize(size){
+                dotSize = size;
+            }
+
+            function setRefreshrate(ms){
+                clearInterval(intervalID);
+                refreshrate = ms;
+                startLoop();
+            }
+
+            function toggleTeam(bool){
+                drawTeam = bool;
+            }
+
+            function toggleOwnName(bool){
+                drawOwnName = bool;
+            }
+
+            function toggleViewangles(bool){
+                drawViewangle = bool;
+            }
+
+            function setViewangleLength(length){
+                viewangleLength = length;
+            }
+
+            function map(x, in_min, in_max, out_min, out_max){
+                return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+            }
+
+            // main loop
+            function startLoop(){
+                intervalID = window.setInterval(() => {
+                    // get localplayer
+                    var localplayer = constellation.get.localplayer() 
+
+                    if(localplayer != null && localplayer.is_alive){
+                        var players = constellation.get.players() 
+                        if(players != null){
+                            // clear canvas
+                            ctx.clearRect(- canvas.clientWidth / 2, - canvas.clientHeight / 2, canvas.clientWidth, canvas.clientHeight);
+                            ctx.setTransform(1, 0, 0, 1, canvas.clientWidth / 2, canvas.clientHeight / 2);
+                            drawPoint(ctx, 0, 0, drawOwnName ? localplayer.name : '', "green", +dotSize);
+
+                            // player loop
+                            for(let property in players){
+                                let player = JSON.parse(players[property]);
+                                if(player.is_alive && !player.is_dormant && player.steam != localplayer.steam){
+                                    // player position
+                                    let x = player.x - localplayer.x;
+                                    let y = player.y - localplayer.y;
+                                    let calcRotation = localplayer.viewangles.y * Math.PI / 180;
+                                    let rotatedX = y * (-Math.cos(calcRotation)) + x * Math.sin(calcRotation);
+                                    let rotatedY = x * (-Math.cos(calcRotation)) - y * Math.sin(calcRotation);
+
+                                    // player viewangles
+                                    let v_ang, playerYaw, yawX, yawY, rotatedYawX, rotatedYawY;
+                                    if(drawViewangle){
+                                        v_ang = constellation.memory.read_vector(player.address + m_angEyeAngles);
+                                        playerYaw = v_ang["vector"]["y"] *Math.PI / 180;
+                                        yawX = Math.cos(playerYaw) * viewangleLength;
+                                        yawY = Math.sin(playerYaw) * viewangleLength;
+                                        rotatedYawX = yawY * (-Math.cos(calcRotation)) + yawX * Math.sin(calcRotation);
+                                        rotatedYawY = yawX * (-Math.cos(calcRotation)) - yawY * Math.sin(calcRotation);
+                                    }
+
+                                    // drawing
+                                    if(player.team != localplayer.team){
+                                        drawPoint(ctx, map(rotatedX, -1000, 1000, -canvas.clientWidth / 2, canvas.clientWidth / 2), map(rotatedY, -1000, 1000, -canvas.clientHeight / 2, canvas.clientHeight / 2), player.name, "red", +dotSize);
+                                        if(drawViewangle){
+                                            //drawPoint(ctx, map(rotatedX + rotatedYawX, -1000, 1000, -canvas.clientWidth / 2, canvas.clientWidth / 2), map(rotatedY + rotatedYawY, -1000, 1000, -canvas.clientHeight / 2, canvas.clientHeight / 2), '', "red", 2);
+                                            ctx.beginPath();
+                                            ctx.moveTo(map(rotatedX, -1000, 1000, -canvas.clientWidth / 2, canvas.clientWidth / 2), map(rotatedY, -1000, 1000, -canvas.clientHeight / 2, canvas.clientHeight / 2));
+                                            ctx.lineTo(map(rotatedX + rotatedYawX, -1000, 1000, -canvas.clientWidth / 2, canvas.clientWidth / 2), map(rotatedY + rotatedYawY, -1000, 1000, -canvas.clientHeight / 2, canvas.clientHeight / 2));
+                                            ctx.stroke();
+                                        }
+                                    }
+                                    else if(drawTeam){
+                                        drawPoint(ctx, map(rotatedX, -1000, 1000, -canvas.clientWidth / 2, canvas.clientWidth / 2), map(rotatedY, -1000, 1000, -canvas.clientHeight / 2, canvas.clientHeight / 2), player.name, "green", +dotSize);
+                                        if(drawViewangle){
+                                            //drawPoint(ctx, map(rotatedX + rotatedYawX, -1000, 1000, -canvas.clientWidth / 2, canvas.clientWidth / 2), map(rotatedY + rotatedYawY, -1000, 1000, -canvas.clientHeight / 2, canvas.clientHeight / 2), '', "green", 2);
+                                            ctx.beginPath();
+                                            ctx.moveTo(map(rotatedX, -1000, 1000, -canvas.clientWidth / 2, canvas.clientWidth / 2), map(rotatedY, -1000, 1000, -canvas.clientHeight / 2, canvas.clientHeight / 2));
+                                            ctx.lineTo(map(rotatedX + rotatedYawX, -1000, 1000, -canvas.clientWidth / 2, canvas.clientWidth / 2), map(rotatedY + rotatedYawY, -1000, 1000, -canvas.clientHeight / 2, canvas.clientHeight / 2));
+                                            ctx.stroke();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }, refreshrate);
+            }
+
+            // first loop on startup
+            startLoop();
+        </script>
+    </body>
+</html>
+

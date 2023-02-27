@@ -1,0 +1,299 @@
+<!--
+    @title
+        fantasy.constellation Web GUI
+    @author
+        Demovoid
+    @notes
+        Using Vuetify might break a few things(pretty much everything).
+-->
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+        <style scoped>
+            .v-application--wrap{
+                background-color: #0d0c1d;
+            }
+            .nav .v-input__control{
+                margin-top: auto;
+            }
+        </style>
+
+        <!-- script includes -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="js/fantasy.constellation.js"></script>
+
+        <!-- title -->
+        <title>fantasy.constellation</title>
+    </head>
+
+    <body>
+
+        <div id="app">
+			<v-app>
+                <v-main>
+                    <v-container fluid class="ma-0 pa-0 d-flex flex-column">
+                        <v-container fluid class="ma-0 pa-0 d-flex space-around nav">
+                            <v-img :src="imgSrc" height="86" position="left" contain class='col-2'></v-img>
+                            <v-spacer></v-spacer>
+                            <v-text-field v-model="imgSrc" id="img_src" type="text" label="Image source" class="col-6" outlined dense></v-text-field>
+                            <v-spacer></v-spacer>
+                            <v-select v-model='selected' class="col-3" :items='selector' outlined dense></v-select>
+                        </v-container>
+
+                        <v-container v-if="visible('Misc')" fluid class="ma-0 ml-3 pa-0">
+                            <h2 style="color: lightgray; margin-top: 6px; margin-bottom: 6px;">Misc</h2>
+                            <v-switch id="allow_notif" name="pure_mode_allow_modifications" v-model="misc.allow_notif" label="Allow Modification of Game" class="ma-0"></v-switch>
+                            <v-switch id="silence" name="pure_mode_silence" v-model="misc.silence" label="Silence" class="ma-0"></v-switch>
+                            <v-switch id="debug" name="pure_mode_debug" v-model="misc.debug" label="Debug Mode" class="ma-0"></v-switch>
+                            <v-switch id="always_update" name="pure_mode_always_update" v-model="misc.always_update" label="Download Latest GUI" class="ma-0"></v-switch>
+                            <v-select v-model='misc.hwid_spoofer' name="pure_mode_hwid_spoofer" label="HWID Spoofer" :items='["off", "on", "full"]' class="col-2" outlined dense></v-select>
+                        </v-container>
+
+                        <v-container v-if="visible('Humanizer')" fluid class="d-flex pt-0">
+                            <v-container fluid class="ma-0 pa-0">
+                                <h2 style="color: lightgray; margin-top: 6px; margin-bottom: 6px;">Humanizer</h2>
+                                <v-switch id="Humanizer" name="humanizer" v-model="humanizer.active" label="Humanizer" class="ma-0" v-on:change="fantasy_cmd('Humanizer','set')"></v-switch>
+                                
+                                <v-text-field v-model="humanizer.key" id="hKey" name="humanizer_key" type="number" min=0 label="Humanizer Key #1" class="ma-0 col-6" v-on:change="changeVal('hKey', 'set')"></v-text-field>
+                                <v-text-field v-model="humanizer.key2" id="hKey2" name="humanizer_key2" type="number" min=0 label="Humanizer Key #2" class="ma-0 col-6" v-on:change="changeVal('hKey2', 'set')"></v-text-field>
+                                
+                                <v-switch id="ff" name="humanizer_friendly_fire" v-model="humanizer.ff" label="Humanizer Friendly Fire" class="ma-0" v-on:change="fantasy_cmd('ff','set')"></v-switch>
+                                <v-switch id="jump" name="humanizer_jump_check" v-model="humanizer.jump_check" label="Humanizer Jump Check" class="ma-0" v-on:change="fantasy_cmd('jump','set')"></v-switch>
+                                
+                                <v-switch id="bone_prio" name="humanizer_bone_priority" v-model="humanizer.bone_prio" label="Humanizer Bone Priority" class="ma-0" v-on:change="fantasy_cmd('bone_prio','set')"></v-switch>
+                                <v-switch id="anti_lazy" name="humanizer_anti_lazy" v-model="humanizer.anti_lazy" label="Humanizer Anti-Lazy Module" class="ma-0" v-on:change="fantasy_cmd('anti_lazy','set')"></v-switch>
+                                
+                                <v-switch id="curve" name="humanizer_curve" v-model="humanizer.curve" label="Humanizer Curve" class="ma-0" v-on:change="fantasy_cmd('curve','set')"></v-switch>
+                                <v-text-field v-model="humanizer.curveDegree" id="curveDegree" name="humanizer_curve_degree" type="number" step=0.01 min="0.05" label="Humanizer Curve Degree" class="ma-0 col-6" v-on:change="changeVal('curveDegree', 'set')"></v-text-field>
+                                
+                                <v-text-field v-model="humanizer.mouse_threshold" id="mouse_threshold" name="humanizer_mouse_threshold" type="number" min=0 label="Humanizer Mouse Threshold" class="ma-0 col-6" v-on:change="changeVal('mouse_threshold', 'set')"></v-text-field>
+                            </v-container>
+
+                            <v-container fluid class="ma-0 ml-3 pa-0">
+                                <h2 style="color: lightgray; margin-top: 6px; margin-bottom: 6px;">Humanizer #2</h2>
+                                <v-switch id="Humanizer2" name="humanizer_anxiety" v-model="humanizer.anxiety" label="Humanizer #2 (Sensitivity/Anxiety/Pro)" class="ma-0" v-on:change="fantasy_cmd('Humanizer2','set')"></v-switch>
+                                <v-text-field v-model="humanizer.anxiety_strength" id="anxiety_strength" name="humanizer_anxiety_strength" type="number" min=2 label="Humanizer #2 Strength" class="ma-0 col-6" v-on:change="changeVal('anxiety_strength', 'set')"></v-text-field>
+                            </v-container>
+                        </v-container>
+
+                        <v-container v-if="visible('Triggerbot')" fluid class="ma-0 ml-3 pa-0">
+                            <h2 style="color: lightgray; margin-top: 6px; margin-bottom: 6px;">Triggerbot</h2>   
+                            <v-switch id="triggerbot" name="triggerbot" v-model="triggerbot.active" label="Standard Triggerbot" class="ma-0" v-on:change="fantasy_cmd('triggerbot','set')"></v-switch>
+                            <v-switch id="humanizer_triggerbot" name="humanizer_triggerbot" v-model="humanizer.triggerbot" label="Humanizer Triggerbot" class="ma-0" v-on:change="fantasy_cmd('humanizer_triggerbot','set')"></v-switch>
+                            <v-text-field v-model="triggerbot.key" id="tKey" name="humanizer_triggerbot_key" type="number" min=0 label="Triggerbot Key" class="ma-0 col-2" v-on:change="changeVal('tKey', 'set')"></v-text-field>
+                        </v-container>
+
+                        <v-container v-if="visible('Infos')" fluid class="ma-0 ml-3 pa-0">
+                            <h2 style="color: lightgray; margin-top: 6px; margin-bottom: 6px;">Weapon Information: N/A</h2>
+                            <v-text-field v-model="humanizer.rcs.x" id="rcsx" name="humanizer_weapon_rcs_x" type="number" min=0 max=100 label="RCS X" class="ma-0 col-2" v-on:change="changeVal('rcsx', 'set weapon')"></v-text-field>
+                            <v-text-field v-model="humanizer.rcs.y" id="rcsy" name="humanizer_weapon_rcs_x" type="number" min=0 max=100 label="RCS Y" class="ma-0 col-2" v-on:change="changeVal('rcsy', 'set weapon')"></v-text-field>
+                            <v-text-field v-model="humanizer.bone" id="bone" name="humanizer_weapon_rcs_x" type="number" min=-1 label="Bone" class="ma-0 col-2" v-on:change="changeVal('bone', 'set weapon')"></v-text-field>
+                            
+                            <v-btn rounded @click="get_weapon" class="mb-3 tertiary--text">Refresh Current Weapon</v-btn>
+                        </v-container>
+
+                        <v-container v-if="visible('ESP')" fluid class="ma-0 ml-3 pa-0">
+                            <h2 style="color: lightgray; margin-top: 6px; margin-bottom: 6px;">ESP</h2>
+                            <v-switch id="sound_esp" name="esp_sound" v-model="esp.sound_esp" label="Sound ESP" class="ma-0" v-on:change="fantasy_cmd('sound_esp','set')"></v-switch>
+                            <v-text-field v-model="esp.sound_esp_fov" id="sound_fov" name="esp_sound_fov" type="number" min=0 label="Sound ESP FOV" class="ma-0 col-2" v-on:change="changeVal('sound_fov', 'set')"></v-text-field>
+                        </v-container>
+
+                        <v-container fluid class="ma-0 pa-0 mt-4 ml-3">
+                            <v-btn rounded @click="start" class="mr-5 secondary--text">Start fantasy.constellation</v-btn>
+                            <v-btn rounded @click="exit" class="ml-5 secondary--text">Exit</v-btn>
+                        </v-container>
+                        <v-container fluid class="ma-0 pa-0 mt-4 ml-3">
+                            <v-btn rounded @click="load" class="mr-5 secondary--text">Load Configuration</v-btn>
+                            <v-btn rounded @click="save" class="ml-5 secondary--text">Save Configuration</v-btn>
+                        </v-container>
+                        
+                    </v-container>
+                </v-main>
+			</v-app>
+		</div>
+    
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+        <script language="javascript">
+			let myVue = new Vue({
+				el: '#app',
+				vuetify: new Vuetify({
+                    theme: {
+                        dark: true,
+                        themes: {
+                            options: { customProperties: true },
+                            dark: {
+                                primary: '#8f00ff',
+                                secondary: '#f61e61',
+                                tertiary: '#0096ff',
+                                background: '#0d0c1d',
+                                nav: '#19183a',
+                            }
+                        }
+                    },
+                }),
+                components: {
+                },
+				data:{
+                    selector: ['All', 'Humanizer', 'Triggerbot', 'ESP', 'Misc', 'Infos'],
+                    selected: 'All',
+                    imgSrc: 'https://styles.redditmedia.com/t5_7br55/styles/profileIcon_sbeio2mh1dg71.jpg?width=256&height=256&crop=256:256,smart&s=424aa8cb8d1de9947ea14c14e493e6594efdbf0b',
+                    width: 86,
+                    misc: {
+                        allow_notif: false,
+                        silence: false,
+                        debug: false,
+                        always_update: false,
+                        hwid_spoofer: "off",
+                    },
+                    humanizer: {
+                        active: false,
+                        key: 1,
+                        key2: 0,
+                        ff: false,
+                        jump_check: false,
+                        bone_prio: false,
+                        anti_lazy: false,
+                        curve: false,
+                        curveDegree: 0.05,
+                        mouse_threshold: 50,
+                        anxiety: false,
+                        anxiety_strength: 3,
+                        triggerbot: false,
+                        rcs: {
+                            x: 0,
+                            y: 0,
+                        },
+                        bone: -1,
+                    },
+                    triggerbot: {
+                        active: false,
+                        key: 0,
+                    },
+                    esp:{
+                        sound_esp: false,
+                        sound_esp_fov: 5,
+                    },
+				},
+                created:function(){
+                },
+                methods: {
+                    exit: function(event){
+                        fantasy_cmd(event.target, 'exit');
+                    },
+                    start: function (){
+                        start_constellation();
+                    },
+                    load: function(event){
+                        fantasy_cmd(event.target, 'load');
+                    },
+                    save: function(event){
+                        fantasy_cmd(event.target, 'save');
+                    },
+                    get_weapon: function(event){
+                        fantasy_cmd(event.target, 'get weapon')
+                    },
+                    fantasy_cmd: function(id, event){
+                        fantasy_cmd(document.getElementById(id), event);
+                    },
+                    changeVal: function(id, event){
+                        let elem = document.getElementById(id);
+                        if(isNaN(parseInt(elem.value))){
+                            switch(elem.id){
+                                case 'hKey':
+                                    this.humanizer.key = 1;
+                                    break;
+                                case 'hKey2':
+                                    this.humanizer.key2 = 0;
+                                    break;
+                                case 'curveDegree':
+                                    this.humanizer.curveDegree = 0.05;
+                                    break;
+                                case 'mouse_threshold':
+                                    this.humanizer.mouse_threshold = 50;
+                                    break;
+                                case 'anxiety_strength':
+                                    this.humanizer.anxiety_strength = 3;
+                                    break;
+                                case 'tKey':
+                                    this.triggerbot.key = 0;
+                                    break;
+                                case 'sound_fov':
+                                    this.esp.sound_esp_fov = 5;
+                                    break;
+                                case 'rcsx':
+                                    this.humanizer.rcs.x = 0;
+                                    break;
+                                case 'rcsy':
+                                    this.humanizer.rcs.y = 0;
+                                    break;
+                                case 'bone':
+                                    this.humanizer.bone = -1;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }else{
+                            if(parseInt(elem.value) < elem.min){
+                                switch(elem.id){
+                                    case 'hKey':
+                                        this.humanizer.key = elem.min;
+                                        break;
+                                    case 'hKey2':
+                                        this.humanizer.key2 = elem.min;
+                                        break;
+                                    case 'curveDegree':
+                                        this.humanizer.curveDegree = elem.min;
+                                        break;
+                                    case 'mouse_threshold':
+                                        this.humanizer.mouse_threshold = elem.min;
+                                        break;
+                                    case 'anxiety_strength':
+                                        this.humanizer.anxiety_strength = elem.min;
+                                        break;
+                                    case 'tKey':
+                                        this.triggerbot.key = elem.min;
+                                        break;
+                                    case 'sound_fov':
+                                        this.esp.sound_esp_fov = elem.min;
+                                        break;
+                                    case 'rcsx':
+                                        this.humanizer.rcs.x = elem.min;
+                                        break;
+                                    case 'rcsy':
+                                        this.humanizer.rcs.y = elem.min;
+                                        break;
+                                    case 'bone':
+                                        this.humanizer.bone = elem.min;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            if(elem.max && parseInt(elem.value) > elem.max){
+                                switch(elem.id){
+                                    case 'rcsx':
+                                        this.humanizer.rcs.x = elem.max;
+                                        break;
+                                    case 'rcsy':
+                                        this.humanizer.rcs.y = elem.max;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                        fantasy_cmd(elem, event);
+                    },
+                    visible: function(tab){ 
+                        return this.selected == 'All' || this.selected == tab;
+                    },
+                }
+			})
+        </script>
+    </body>
+</html>

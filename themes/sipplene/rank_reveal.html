@@ -1,0 +1,53 @@
+<!--
+    @title
+        Rank Reveal
+    @author
+        Velortex (minor changes Jelly)
+    @notes
+-->
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="js/fantasy.constellation.js"></script>
+        <!-- CSS doesn't contain anything important, only some color changes in the enemy/team texts -->
+        <!-- <link rel="stylesheet" href="css/css.css"> -->
+        <title>Rank Reveal</title>
+       
+        <script>
+            $(document).ready(function() {
+                // through the tables and the memes
+                $('#table-enemy').html("<th>Enemy Name</th><th>Enemy Rank</th>")
+                $('#table-team').html("<th>Team Name</th><th>Team Rank</th>")
+                // local and players
+                var localplayer = constellation.get.localplayer()
+                var players = constellation.get.players()
+                // get client.dll module
+                module_client = constellation.memory.module("client.dll")
+                // scan for dwPlayerResource - https://github.com/frk1/hazedumper/blob/master/config.json#L315
+                dwPlayerResource = constellation.memory.pattern(module_client.address,module_client.size,"8B 3D ? ? ? ? 85 FF 0F 84 ? ? ? ? 81 C7",2,0,0)
+                // get netvar value - https://github.com/frk1/hazedumper/blob/master/config.json#L732
+                let rNET = constellation.memory.netvar("DT_CSPlayerResource", "m_iCompetitiveRanking")
+                // arrays for ranks
+                let ranks = ["Unranked","Silver 1","Silver 2","Silver 3","Silver 4","Silver Elite","Silver Elite Master","Gold Nova 1","Gold Nova 2","Gold Nova 3","Gold Nova Master","Master Guardian 1","Master Guardian 2","Master Guardian Elite","Distinguished Master Guardian","Legendary Eagle","Legendary Eagle Master","Supreme Master First Class","Global Elite"];
+                let s_ranks = ["None","S1","S2","S3","S4","SE","SEM","GN1","GN2","GN3","GNM","MG1","MG2","MGE","DMG","LE","LEM","SMFC","GE"]
+                let playerResource = constellation.memory.read(module_client.address + dwPlayerResource)
+                for (const property in players) {
+                    const json_info = JSON.parse(players[property])
+                    JSON.stringify(json_info)
+                    let i = json_info.index
+                    // get player rank based on index
+                    let rank = constellation.memory.read(playerResource + rNET + (i*4))
+                    if (json_info.team != localplayer.team) {
+                        $('#table-enemy').append(`<tr><td>${json_info.name}</td><td>${s_ranks[rank]}</td></tr>`) // replace s_ranks[rank] with ranks[rank] if you want longer names
+                    } else if (json_info.team = localplayer.team) {
+                        $('#table-team').append(`<tr><td>${json_info.name}</td><td>${s_ranks[rank]}</td></tr>`) // replace s_ranks[rank] with ranks[rank] if you want longer names
+                    }
+                }
+            })
+        </script>
+    </head>
+    <body>
+        <table style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; float:left; margin-bottom: 10px;" id="table-enemy" border="1"></table>
+        <table style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; float:left; margin-bottom: 10px;" id="table-team" border="1"></table>
+    </body>
+</html>
